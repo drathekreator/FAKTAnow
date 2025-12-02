@@ -29,6 +29,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            
+            // 🚨 TAMBAHAN PENTING UNTUK PORTAL BERITA:
+            'role' => 'member', // Default role adalah 'member'
         ];
     }
 
@@ -39,6 +42,28 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+    
+    // ⚙️ STATE KUSTOM: ADMIN
+    /**
+     * Indicate that the user should have the 'admin' role.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+    
+    // ⚙️ STATE KUSTOM: EDITOR
+    /**
+     * Indicate that the user should have the 'editor' role.
+     */
+    public function editor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'editor',
         ]);
     }
 }
