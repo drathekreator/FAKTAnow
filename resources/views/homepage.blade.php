@@ -7,8 +7,15 @@
     @vite('resources/css/app.css')
 </head>
 <body>
-    <h1 class="text-3xl font-bold underline">
-        Hello World!
-    </h1>
+    <header>
+        <!-- Navbar -->
+    </header>
+
+    <section id="Body">
+        <!-- isi auto layouting -->
+    </section>
+    <footer>
+        <!-- Footer isi informasi institusi -->
+    </footer>
 </body>
 </html>
