@@ -15,39 +15,58 @@
         <p class="text-gray-500 text-sm mb-6">Masuk ke akun Anda untuk melanjutkan</p>
 
         @if ($errors->any())
-            <div class="mb-4 bg-red-100 text-red-700 p-3 rounded">
-                {{ $errors->first() }}
+            <div class="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-3 rounded">
+                <p>{{ $errors->first() }}</p>
             </div>
         @endif
 
-        <form method="POST" action="{{ url('/login') }}">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Email -->
-            <label class="block text-sm font-medium mb-1">Email</label>
-            <div class="flex items-center bg-gray-100 p-3 rounded-lg mb-4">
+            <label for="email" class="block text-sm font-medium mb-1">Email</label>
+            <div class="flex items-center bg-gray-100 p-3 rounded-lg mb-4 
+                 {{ $errors->has('email') ? 'border border-red-500' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M16 12l-4 4m0 0l-4-4m4 4V8" />
                 </svg>
-                <input type="email" name="email" placeholder="nama@email.com"
-                    class="bg-gray-100 outline-none w-full" required value="{{ old('email') }}">
+                <input type="email" id="email" name="email" placeholder="nama@email.com"
+                    class="bg-gray-100 outline-none w-full" required value="{{ old('email') }}" autofocus>
             </div>
+            
+            @error('email')
+                <p class="text-red-500 text-xs mt-1 mb-4">{{ $message }}</p>
+            @enderror
 
-            <!-- Password -->
-            <label class="block text-sm font-medium mb-1">Password</label>
-            <div class="flex items-center bg-gray-100 p-3 rounded-lg mb-6">
+            <label for="password" class="block text-sm font-medium mb-1">Password</label>
+            <div class="flex items-center bg-gray-100 p-3 rounded-lg mb-4 
+                 {{ $errors->has('password') ? 'border border-red-500' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M12 11c.828 0 1.5-.672 1.5-1.5S12.828 8 12 8s-1.5.672-1.5 1.5S11.172 11 12 11z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M17.25 11.25v6a2.25 2.25 0 01-2.25 2.25h-6a2.25 2.25 0 01-2.25-2.25v-6A2.25 2.25 0 019 9h6a2.25 2.25 0 012.25 2.25z" />
                 </svg>
-                <input type="password" name="password" placeholder="Masukkan password"
-                    class="bg-gray-100 outline-none w-full" required>
+                <input type="password" id="password" name="password" placeholder="Masukkan password"
+                    class="bg-gray-100 outline-none w-full" required autocomplete="current-password">
+            </div>
+            
+            @error('password')
+                <p class="text-red-500 text-xs mt-1 mb-4">{{ $message }}</p>
+            @enderror
+
+            <div class="flex items-center justify-between mb-6">
+                <label for="remember_me" class="inline-flex items-center">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-red-600 shadow-sm focus:ring-red-500" name="remember">
+                    <span class="ml-2 text-sm text-gray-600">Ingat Saya</span>
+                </label>
+                @if (Route::has('password.request'))
+                    <a class="text-sm text-red-600 hover:text-red-500 underline" href="{{ route('password.request') }}">
+                        Lupa Password?
+                    </a>
+                @endif
             </div>
 
-            <!-- Button -->
             <button type="submit"
                 class="w-full bg-red-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-red-700 transition">
                 Login
@@ -55,7 +74,7 @@
 
             <p class="text-center mt-4 text-sm">
                 Belum punya akun?
-                <a href="/register" class="text-red-600 font-semibold">Register</a>
+                <a href="{{ route('register') }}" class="text-red-600 font-semibold">Register</a>
             </p>
         </form>
     </div>
