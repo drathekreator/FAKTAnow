@@ -20,8 +20,9 @@ class HomePageController extends Controller
             $categories = Category::all() ?? collect(); 
 
             // 2. Query Logika Artikel
-            // Memastikan eager load relasi user dan category untuk menghindari N+1 problem
+            // Memastikan eager load relasi user, category, dan likes untuk menghindari N+1 problem
             $query = Article::with(['user', 'category'])
+                            ->withCount('likes')
                             ->where('status', 'published');
 
             // Logika Pencarian: Pastikan hanya berjalan jika ada string pencarian yang valid
@@ -67,6 +68,7 @@ class HomePageController extends Controller
             // 2. Ambil artikel HANYA dari kategori yang dipilih
             $articles = $category->articles()
                                  ->with('user')
+                                 ->withCount('likes')
                                  ->where('status', 'published')
                                  ->latest()
                                  ->paginate(9);
@@ -84,6 +86,35 @@ class HomePageController extends Controller
             );
             
             return view('homepage', compact('categories', 'articles'))->with('error', 'Terjadi kesalahan saat memuat kategori. Silakan coba lagi nanti.');
+        }
+    }
+    
+    /**
+     * Menampilkan detail artikel dan komentar
+     */
+    public function show(Article $article)
+    {
+        try {
+            // Increment views
+            $article->increment('views');
+            
+            // Ambil kategori untuk navbar
+            $categories = Category::all() ?? collect();
+            
+            // Ambil semua komentar (tidak perlu approval)
+            $comments = $article->comments()
+                               ->with('user')
+                               ->latest()
+                               ->get();
+            
+            // Load likes count
+            $article->loadCount('likes');
+            
+            return view('detailedpage', compact('article', 'categories', 'comments'));
+        
+        } catch (\Exception $e) {
+            \Log::error('Database Error in HomePageController@show: ' . $e->getMessage());
+            return redirect()->route('home')->with('error', 'Artikel tidak ditemukan.');
         }
     }
 }

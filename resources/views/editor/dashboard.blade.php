@@ -1,301 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Author</title>
-    @vite('resources/css/app.css')
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-        .navbar {
-            background: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .navbar h1 {
-            color: #d60000;
-            margin: 0;
-        }
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
-        .title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 22px;
-            color: #d60000;
-        }
-        .card p {
-            margin: 0 0 15px;
-            color: #444;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background: #d60000;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-        }
-        .btn:hover {
-            background: #b20000;
-        }
-    </style>
+    <title>Dashboard Editor - FAKTAnow</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
-    <div class="navbar">
-        <h1>FAKTAnow Author</h1>
-        <a href="/" class="btn">Kembali ke Home</a>
-    </div>
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('icons/Logo_FAKTA_now 1.png') }}" alt="FAKTAnow Logo" class="h-8 w-8 object-contain">
+                    <h1 class="text-xl font-black">
+                        <span class="text-red-600">FAKTA</span><span class="text-gray-800 dark:text-white">now</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">Editor</span>
+                    </h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="/" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition">
+                        Ke Homepage
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-gray-700 dark:bg-gray-600 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div class="title">Dashboard Author</div>
+        <h2 class="text-3xl font-black text-gray-900 dark:text-white mb-8">Dashboard Penulis</h2>
 
-        <div class="grid">
-
-            <!-- Tulis Berita -->
-            <div class="card">
-                <h2>Tulis Berita</h2><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Author</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-        .navbar {
-            background: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .navbar h1 {
-            color: #d60000;
-            margin: 0;
-        }
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
-        .title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 22px;
-            color: #d60000;
-        }
-        .card p {
-            margin: 0 0 15px;
-            color: #444;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background: #d60000;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            border: none; /* Tambahkan ini agar button type="submit" terlihat sama */
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #b20000;
-        }
-        /* Style Tabel */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .data-table th {
-            background-color: #f8f8f8;
-            color: #333;
-            font-weight: 600;
-        }
-        .data-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        .action-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-        .btn-edit { background: #ffc107; color: #333; }
-        .btn-delete { background: #d60000; color: white; border: none; }
-    </style>
-</head>
-
-<body>
-
-    <div class="navbar">
-        <h1>FAKTAnow Author</h1>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn" style="background: #444;">
-                Logout
-            </button>
-        </form>
-    </div>
-
-    <div class="container">
-
-        <div class="title">Dashboard Penulis</div>
-
+        <!-- Notifications -->
         @if (session('success'))
-            <div style="padding: 15px; margin-bottom: 20px; border-radius: 5px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+            <div class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-400 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div style="padding: 15px; margin-bottom: 20px; border-radius: 5px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg">
                 {{ session('error') }}
             </div>
         @endif
 
-        <div class="grid">
-
-            <div class="card">
-                <h2>Tulis Berita</h2>
-                <p>Buat berita baru untuk dipublikasikan.</p>
-                <a href="{{ route('articles.create') }}" class="btn">Mulai Menulis</a>
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tulis Berita</h3>
+                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Buat berita baru untuk dipublikasikan</p>
+                <a href="{{ route('articles.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+                    Mulai Menulis
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="card" style="border-left: 6px solid #d60000;">
-                <h2>Total Berita Saya</h2>
-                <p>Total: **{{ $articles->count() }}** Artikel</p>
-                <a href="#article-list" class="btn" style="background:#444;">Lihat Semua</a>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 border-red-600 p-6 hover:shadow-lg transition">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Total Berita Saya</h3>
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <p class="text-4xl font-black text-red-600 mb-4">{{ $articles->count() }}</p>
+                <a href="#article-list" class="inline-flex items-center text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">
+                    Lihat Semua
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </a>
             </div>
-
         </div>
-        
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
 
+        <!-- Articles List -->
         <div id="article-list">
-            <h2 class="title" style="font-size: 24px; margin-top: 0;">Daftar Artikel Saya ({{ $articles->count() }})</h2>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Daftar Artikel Saya ({{ $articles->count() }})</h3>
             
             @if ($articles->isEmpty())
-                <p style="padding: 15px; background: white; border-radius: 10px;">Anda belum memiliki artikel. Mulai menulis sekarang!</p>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-12 text-center border border-gray-200 dark:border-gray-700">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg mb-4">Anda belum memiliki artikel</p>
+                    <a href="{{ route('articles.create') }}" class="inline-flex items-center px-6 py-3 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+                        Mulai Menulis Sekarang
+                    </a>
+                </div>
             @else
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Judul</th>
-                            <th>Status</th>
-                            <th>Views</th>
-                            <th>Terakhir Update</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($articles as $article)
-                            <tr>
-                                <td>{{ Str::limit($article->title, 50) }}</td>
-                                <td>
-                                    <span style="font-weight: bold; color: {{ $article->status == 'published' ? 'green' : ($article->status == 'draft' ? '#999' : 'orange') }};">
-                                        {{ strtoupper($article->status) }}
-                                    </span>
-                                </td>
-                                <td>{{ number_format($article->views) }}</td>
-                                <td>{{ $article->updated_at->format('d M Y H:i') }}</td>
-                                <td>
-                                    <a href="{{ route('articles.edit', $article->slug) }}" class="action-btn btn-edit">Edit</a>
-                                    
-                                    <form action="{{ route('articles.destroy', $article->slug) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus artikel: {{ $article->title }}?');" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn btn-delete">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Judul</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Views</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Update</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach ($articles as $article)
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            {{ Str::limit($article->title, 50) }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full
+                                                {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
+                                                   ($article->status == 'draft' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' : 
+                                                   'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400') }}">
+                                                {{ strtoupper($article->status) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                                            {{ number_format($article->views) }}
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                                            {{ $article->updated_at->format('d M Y H:i') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <a href="{{ route('articles.edit', $article->slug) }}" 
+                                                   class="px-3 py-1.5 text-sm font-semibold text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 transition">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('articles.destroy', $article->slug) }}" method="POST" 
+                                                      onsubmit="return confirm('Yakin ingin menghapus artikel: {{ $article->title }}?');" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="px-3 py-1.5 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             @endif
         </div>
         
-    </div>
-
-</body>
-</html><h2>Berita</h2>
-                <p>Buat berita baru untuk dipublikasikan.</p>
-                <a href="#" class="btn">Mulai Menulis</a>
-            </div>
-
-            <!-- Kelola Berita -->
-
-            <!-- Draft -->
-
-        </div>
-
     </div>
 
 </body>

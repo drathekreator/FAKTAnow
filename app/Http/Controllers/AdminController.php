@@ -58,7 +58,7 @@ class AdminController extends Controller
     public function updateUserRole(Request $request, User $user){
         //validasi request hanya dari admin
         $request->validate([
-            'role'=>'required|in:admin, editor, member',
+            'role'=>'required|in:admin,editor,user',
         ]);
         //update role
         $user->update([
@@ -66,7 +66,7 @@ class AdminController extends Controller
         ]);
 
         //redirect ke current page + kasih message sukses
-        return redirect()->back()->with('success', 'Role {{$user->name}} sudah berhasil diupdate');
+        return redirect()->back()->with('success', "Role {$user->name} sudah berhasil diupdate menjadi {$request->role}");
     }
     
     /**
