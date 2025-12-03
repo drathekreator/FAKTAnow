@@ -255,7 +255,7 @@
                             <td>Draft/Publish</td>
                             <td>{{ $article->created_at->format('d M Y') }}</td>
                             <td>
-                                <a href="{{ route('articles.edit', $article) }}" class="action-btn" style="background:#007bff; color:white;">Edit</a>
+                                <a hrelf="{{ route('articles.edit', $article) }}" class="action-btn" style="background:#007bff; color:white;">Edit</a>
                                 
                                 <form action="{{ route('articles.destroy', $article) }}" method="POST" onsubmit="return confirm('Yakin hapus artikel?');" style="display:inline;">
                                     @csrf
