@@ -48,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 
+        // BARIS BARU: Route untuk menghapus artikel oleh Admin (memanggil destroyArticle di AdminController)
+        Route::delete('/admin/articles/{article}', [AdminController::class, 'destroyArticle'])->name('admin.articles.destroy');
+
         Route::get('/admin/articles/review', [ArticleController::class, 'reviewIndex'])->name('admin.review.index');
         Route::put('/admin/articles/{article}/status', [ArticleController::class, 'updateStatus'])->name('admin.articles.updateStatus');
     });

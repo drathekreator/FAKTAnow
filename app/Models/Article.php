@@ -12,7 +12,6 @@ class Article extends Model
     use HasFactory;
     
     // --- Mass Assignment Protection ---
-    // Kolom-kolom yang boleh diisi melalui mass assignment 
     protected $fillable = [
         'user_id',
         'title',
@@ -22,6 +21,20 @@ class Article extends Model
         'views',
         'status',
     ];
+
+    // ------------------------------------------------------------------
+    // PERBAIKAN KRITIS UNTUK 404 NOT FOUND (MODEL BINDING)
+    // ------------------------------------------------------------------
+    /**
+     * Dapatkan kunci rute untuk model. Ini memaksa Laravel menggunakan
+     * kolom 'slug' alih-alih 'id' di URL.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+    // ------------------------------------------------------------------
+
 
     // --- Relasi Eloquent ---
 

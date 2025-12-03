@@ -3,44 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;      // Import Model User untuk manajemen pengguna
-// use App\Models\Article; // Import Model Article Anda (misalnya jika nama modelnya Article)
+use App\Models\User; 
+use App\Models\Article; // WAJIB: Import Model Article Anda
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminController extends Controller
 {
     /**
      * Menampilkan Admin Dashboard dengan daftar semua pengguna dan artikel.
-     * Metode ini dipanggil oleh Route::get('/admin/dashboard').
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         // 1. Ambil data Pengguna
-        // Mengambil semua user kecuali user yang sedang login saat ini (auth()->id())
-        // untuk mencegah admin menghapus dirinya sendiri secara tidak sengaja.
-        $users = User::where('id', '!=', auth()->id())->get();
+        $users = User::where('id', '!=', Auth::id())->get();
 
-        // 2. Ambil data Artikel (Ganti 'Article' dengan nama model Anda)
-        // Anda bisa tambahkan paginasi (paginate(10)) jika datanya banyak.
-        // $articles = Article::latest()->get(); 
+        // 2. Ambil data Artikel (Admin melihat SEMUA)
+        // Eager load relasi 'user' (penulis) untuk ditampilkan di tabel
+        $articles = Article::with('user')->latest()->get(); 
         
-        // Catatan: Jika Anda belum punya model Article, baris di atas bisa dikomentari dulu.
-        $articles = []; // Placeholder jika Model Article belum siap
-
         // Tampilkan view dashboard admin dan kirim data
-        return view('admin.dashboard', [
-            'users' => $users,
-            'articles' => $articles,
-        ]);
+        return view('admin.dashboard', compact('users', 'articles'));
     }
 
     /**
      * Menghapus pengguna dari database.
-     * Metode ini dipanggil oleh Route::delete('/admin/users/{user}').
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroyUser(User $user) // Route Model Binding digunakan di sini
+    public function destroyUser(User $user): RedirectResponse
     {
         // Pencegahan: Larang admin menghapus admin lain
         if ($user->role === 'admin') {
@@ -51,5 +47,26 @@ class AdminController extends Controller
         $user->delete();
 
         return back()->with('success', 'Pengguna ' . $user->name . ' berhasil dihapus.');
+    }
+    
+    /**
+     * Menghapus artikel dari database oleh Admin.
+     * Menggunakan Model Binding untuk menemukan artikel berdasarkan slug.
+     * @param \App\Models\Article $article
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroyArticle(Article $article): RedirectResponse
+    {
+        // 1. Hapus file thumbnail dari storage (jika ada)
+        if ($article->thumbnail_url) {
+            // Konversi URL storage ke path yang bisa dihapus ('/storage/...' -> 'public/...')
+            $pathToDelete = Str::replaceFirst('/storage/', 'public/', $article->thumbnail_url);
+            Storage::delete($pathToDelete);
+        }
+        
+        // 2. Hapus data artikel
+        $article->delete();
+
+        return back()->with('success', "Artikel '{$article->title}' berhasil dihapus.");
     }
 }
