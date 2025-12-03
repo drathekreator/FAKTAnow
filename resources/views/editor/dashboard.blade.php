@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Author</title>
+    @vite('resources/css/app.css')
     <style>
         body {
             margin: 0;
