@@ -28,7 +28,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // ------------------------------------------------------------------
+        // LOGIKA PENGALIHAN BERDASARKAN ROLE (Perbaikan Utama)
+        // ------------------------------------------------------------------
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        } elseif ($user->role === 'editor') {
+            // Jika role adalah 'editor', arahkan ke dashboard editor
+            return redirect()->intended(route('editor.dashboard'));
+        } else {
+            // Untuk role lain (misalnya 'member' atau default), arahkan ke dashboard standar
+            return redirect()->intended(route('dashboard'));
+        }
+        // ------------------------------------------------------------------
     }
 
     /**
