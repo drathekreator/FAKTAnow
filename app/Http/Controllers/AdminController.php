@@ -61,10 +61,12 @@ class AdminController extends Controller
             'role'=>'required|in:admin, editor, member',
         ]);
         //update role
-        $user->update(['role'=>$reqeust->role]);
+        $user->update([
+            'role'=>$request->role,
+        ]);
 
         //redirect ke current page + kasih message sukses
-        return redirect()->back()->with('success', 'Role sudah berhasil diupdate');
+        return redirect()->back()->with('success', 'Role {{$user->name}} sudah berhasil diupdate');
     }
     
     /**
