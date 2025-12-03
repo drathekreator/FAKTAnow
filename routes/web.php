@@ -12,7 +12,7 @@ use App\Http\Controllers\ArticleController;
 // ---------------------------------------------------------------------
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
 // Route OTENTIKASI KUSTOM

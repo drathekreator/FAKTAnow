@@ -214,11 +214,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($articles as $article)
+                    @foreach ($articles as $article)
                         <tr>
                             <td>{{ $article->id }}</td>
                             <td>{{ $article->title }}</td>
-                            <td>{{ $article->author->name }}</td> 
+                            <td>{{ $article->user->name }}</td> 
                             <td>Draft/Publish</td>
                             <td>{{ $article->created_at->format('d M Y') }}</td>
                             <td>
@@ -231,7 +231,7 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach --}}
+                    @endforeach
                     <tr><td colspan="6">Data artikel akan muncul di sini setelah Model Article dan Route Management Artikel diimplementasikan.</td></tr>
                 </tbody>
             </table>
