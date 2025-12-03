@@ -53,6 +53,19 @@ class AdminController extends Controller
 
         return back()->with('success', 'Pengguna ' . $user->name . ' berhasil dihapus.');
     }
+
+    //Fitur update role member
+    public function updateUserRole(Request $request, User $user){
+        //validasi request hanya dari admin
+        $request->validate([
+            'role'=>'required|in:admin, editor, member',
+        ]);
+        //update role
+        $user->update(['role'=>$reqeust->role]);
+
+        //redirect ke current page + kasih message sukses
+        return redirect()->back()->with('success', 'Role sudah berhasil diupdate');
+    }
     
     /**
      * Menghapus artikel dari database oleh Admin.

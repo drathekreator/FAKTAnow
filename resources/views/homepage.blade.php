@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth bg-white dark:bg-gray-950 scheme-light dark:scheme-dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FAKTAnow - Berita Terpercaya</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 font-sans text-gray-900 flex flex-col min-h-screen">
+<body class="font-sans text-gray-900 dark:text-white-900 flex flex-col min-h-screen">
 
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-red-600 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 
                 <div class="flex items-center gap-8">
                     <a href="/" class="flex-shrink-0 flex items-center">
                         <span class="text-2xl font-black text-red-600 tracking-tighter">FAKTA</span>
-                        <span class="text-2xl font-black text-gray-800 tracking-tighter">now.</span>
+                        <span class="text-2xl font-black text-gray-800 tracking-tighter dark:text-white">now.</span>
                     </a>
 
                     <div class="hidden md:flex space-x-6">
@@ -45,7 +45,7 @@
                         <div class="ml-2">
                             @auth
                                 <div class="relative group">
-                                    <button class="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-red-600 transition">
+                                    <button class="flex items-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-100 hover:text-red-600 transition">
                                         <span>Halo, {{ Auth::user()->name }}</span>
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                     </button>
@@ -73,7 +73,7 @@
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
         
         <div class="mb-8 border-l-4 border-red-600 pl-4">
-            <h1 class="text-3xl font-black text-gray-900">
+            <h1 class="text-gray-700 text-3xl font-black dark:text-white">
                 {{ request('search') ? 'Hasil Pencarian: "' . request('search') . '"' : 'Berita Terkini' }}
             </h1>
             <p class="text-gray-500 mt-1">Menyajikan informasi aktual dan terpercaya untuk Anda.</p>
@@ -122,7 +122,7 @@
                 <div class="inline-block p-4 rounded-full bg-gray-100 mb-4 text-gray-400">
                     <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900">Tidak ada berita ditemukan</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-200">Tidak ada berita ditemukan</h3>
                 <p class="text-gray-500 mt-1">Coba kata kunci lain atau kembali lagi nanti.</p>
             </div>
         @endif

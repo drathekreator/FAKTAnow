@@ -1,242 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-        .navbar {
-            background: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .navbar h1 {
-            color: #d60000;
-            margin: 0;
-        }
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
-        .title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 22px;
-            color: #d60000;
-        }
-        .card p {
-            margin: 0 0 15px;
-            color: #444;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background: #d60000;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-        }
-        .btn:hover {
-            background: #b20000;
-        }
-        /* Style Tabel */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .data-table th {
-            background-color: #f8f8f8;
-            color: #333;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .data-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        .action-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .btn-delete {
-            background: #d60000;
-            color: white;
-            border: none;
-        }
-        .btn-delete:hover {
-            background: #b20000;
-        }
-    </style>
-</head>
-<body>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Admin Dashboard') }}
+        </h2>
+    </x-slot>
 
-    <div class="navbar">
-        <h1>FAKTAnow Admin</h1>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn" style="background: #444; border: none; cursor: pointer;">
-                Logout
-            </button>
-        </form>
-    </div>
-
-    <div class="container">
-        <div class="title">Dashboard Admin</div>
-
-        @if (session('success'))
-            <div class="p-3 mb-4 bg-green-100 text-green-700 rounded-md shadow">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="p-3 mb-4 bg-red-100 text-red-700 rounded-md shadow">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <div class="grid">
-            <div class="card">
-                <h2>Kelola Berita</h2>
-                <p>Total Artikel Saat Ini: **{{ count($articles) }}**</p>
-                <a href="{{ route('editor.dashboard') }}" class="btn">Masuk</a>
-            </div>
-
-            <div class="card" style="border-left: 6px solid red;">
-                <h2>Kelola User</h2>
-                <p>Total User (Non-Admin): **{{ count($users) }}**</p>
-                <a href="#user-management" class="btn" style="background:#444;">Kelola User</a>
-            </div>
-
-            <div class="card">
-                <h2>Laporan Berita</h2>
-                <p>Lihat statistik berita & aktivitas user.</p>
-                <a href="#" class="btn">Lihat</a>
-            </div>
-        </div>
-
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
-        
-        <div id="user-management">
-            <h2 class="title" style="font-size: 24px;">Manajemen Pengguna ({{ count($users) }})</h2>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
             
-            @if ($users->isEmpty())
-                <p>Tidak ada pengguna yang terdaftar selain Anda.</p>
-            @else
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Terdaftar Sejak</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-blue-500">
+                    <div class="text-gray-500 text-sm font-medium uppercase">Total Pembaca</div>
+                    <div class="text-3xl font-bold text-gray-900">{{ number_format($stats['total_views']) }}</div>
+                </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-green-500">
+                    <div class="text-gray-500 text-sm font-medium uppercase">Total Artikel</div>
+                    <div class="text-3xl font-bold text-gray-900">{{ $stats['total_articles'] }}</div>
+                </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-yellow-500">
+                    <div class="text-gray-500 text-sm font-medium uppercase">Menunggu Review</div>
+                    <div class="text-3xl font-bold text-gray-900">{{ $stats['pending_articles'] }}</div>
+                </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-purple-500">
+                    <div class="text-gray-500 text-sm font-medium uppercase">Total User</div>
+                    <div class="text-3xl font-bold text-gray-900">{{ $stats['total_users'] }}</div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">🔥 Berita Terpopuler</h3>
+                <ul class="divide-y divide-gray-200">
+                    @foreach($popularArticles as $pop)
+                    <li class="py-3 flex justify-between items-center">
+                        <span class="text-gray-700 truncate w-2/3">{{ $pop->title }}</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">{{ $pop->views }} Views</span>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Manajemen & Approval Berita</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td><span style="font-weight: bold; color: {{ $user->role == 'editor' ? 'blue' : '#444' }};">{{ strtoupper($user->role) }}</span></td>
-                                <td>{{ $user->created_at->format('d M Y') }}</td>
-                                <td>
-                                    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('PERINGATAN: Yakin ingin menghapus pengguna {{ $user->name }}? Aksi ini tidak dapat dibatalkan.');" style="display:inline;">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($articles as $article)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900 truncate max-w-xs">{{ $article->title }}</div>
+                                    <div class="text-xs text-gray-500">{{ $article->created_at->format('d M Y') }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $article->user->name }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        {{ $article->status === 'published' ? 'bg-green-100 text-green-800' : 
+                                           ($article->status === 'draft' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                        {{ ucfirst($article->status) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
+                                    @if($article->status !== 'published')
+                                    <form action="{{ route('admin.articles.updateStatus', $article->slug) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="published">
+                                        <button type="submit" class="text-green-600 hover:text-green-900 border border-green-600 px-2 py-1 rounded text-xs hover:bg-green-50">
+                                            Approve
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                    @if($article->status === 'published')
+                                    <form action="{{ route('admin.articles.updateStatus', $article->slug) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="draft">
+                                        <button type="submit" class="text-yellow-600 hover:text-yellow-900 border border-yellow-600 px-2 py-1 rounded text-xs hover:bg-yellow-50">
+                                            Unpublish
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                    <form action="{{ route('admin.articles.destroy', $article->slug) }}" method="POST" onsubmit="return confirm('Hapus artikel ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="action-btn btn-delete">
-                                            Hapus
+                                        <button type="submit" class="text-red-600 hover:text-red-900 ml-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-        </div>
-        
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
-        
-        <div>
-            <h2 class="title" style="font-size: 24px;">Manajemen Artikel</h2>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Judul</th>
-                        <th>Penulis</th>
-                        <th>Status</th>
-                        <th>Dibuat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($articles as $article)
-                        <tr>
-                            <td>{{ $article->id }}</td>
-                            <td>{{ $article->title }}</td>
-                            <td>{{ $article->user->name }}</td> 
-                            <td>Draft/Publish</td>
-                            <td>{{ $article->created_at->format('d M Y') }}</td>
-                            <td>
-                                <a href="{{ route('articles.edit', $article) }}" class="action-btn" style="background:#007bff; color:white;">Edit</a>
-                                
-                                <form action="{{ route('articles.destroy', $article) }}" method="POST" onsubmit="return confirm('Yakin hapus artikel?');" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="action-btn btn-delete">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    <tr><td colspan="6">Data artikel akan muncul di sini setelah Model Article dan Route Management Artikel diimplementasikan.</td></tr>
-                </tbody>
-            </table>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Manajemen User & Role</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role Saat Ini</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubah Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($users as $user)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        {{ $user->role === 'admin' ? 'bg-red-100 text-red-800' : 
+                                           ($user->role === 'editor' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800') }}">
+                                        {{ ucfirst($user->role) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <form action="{{ route('admin.users.updateRole', $user->id) }}" method="POST" class="flex items-center gap-2">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="role" class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                            <option value="editor" {{ $user->role == 'editor' ? 'selected' : '' }}>Editor</option>
+                                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        </select>
+                                        <button type="submit" class="text-indigo-600 hover:text-indigo-900 text-xs font-bold">Simpan</button>
+                                    </form>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    @if(auth()->id() !== $user->id) 
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Hapus user ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4">
+                    {{ $users->links() }}
+                </div>
+            </div>
+
         </div>
     </div>
-
-</body>
-</html>
+</x-app-layout>
