@@ -234,15 +234,6 @@
                 <a href="#article-list" class="btn" style="background:#444;">Lihat Semua</a>
             </div>
 
-            <div class="card">
-                @php
-                    $drafts = $articles->where('status', 'draft')->count();
-                @endphp
-                <h2>Draft Berita</h2>
-                <p>Ada **{{ $drafts }}** artikel yang masih draft.</p>
-                <a href="#article-list" class="btn">Lihat Draft</a>
-            </div>
-
         </div>
         
         <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
@@ -299,18 +290,8 @@
             </div>
 
             <!-- Kelola Berita -->
-            <div class="card">
-                <h2>Kelola Berita Saya</h2>
-                <p>Edit atau hapus berita yang sudah Anda buat.</p>
-                <a href="#" class="btn" style="background:#444;">Kelola</a>
-            </div>
 
             <!-- Draft -->
-            <div class="card">
-                <h2>Draft Berita</h2>
-                <p>Lihat berita yang masih dalam status draft.</p>
-                <a href="#" class="btn">Lihat Draft</a>
-            </div>
 
         </div>
 
