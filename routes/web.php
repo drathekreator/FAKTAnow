@@ -12,8 +12,9 @@ use App\Http\Controllers\homePageController;
 // 1. ROUTE PUBLIK DAN GUEST
 // ---------------------------------------------------------------------
 
-Route::get('/', [homePageController::class, 'index'])->name('home');
-Route::get('/category/{category:slug', [homePageController::class, 'byCategory'])->name('category.show');
+Route::get('/', function () {
+    return view('homepage');
+});
 
 // Route OTENTIKASI KUSTOM
 Route::middleware('guest')->group(function () {
