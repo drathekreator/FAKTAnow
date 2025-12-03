@@ -194,6 +194,39 @@
                         @endforeach
                     </tbody>
                 </table>
+                <!-- Form Edit Role User -->
+                <div style="margin-top: 40px; background:white; padding:25px; border-radius:15px; box-shadow:0 5px 12px rgba(0,0,0,0.08);">
+                    <h2 style="margin-bottom:20px; font-size:22px; color:#d60000;">Edit Role Pengguna</h2>
+
+                    <form action="{{ route('admin.users.updateRole') }}" method="POST">
+                        @csrf
+                        <div style="margin-bottom: 15px;">
+                            <label for="user_id" style="font-weight:bold;">Pilih User</label>
+                            <select name="user_id" id="user_id" 
+                                style="width:100%; padding:10px; margin-top:5px; border-radius:10px; border:1px solid #ccc;">
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }} — {{ $user->email }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label for="role" style="font-weight:bold;">Pilih Role Baru</label>
+                            <select name="role" id="role" 
+                                style="width:100%; padding:10px; margin-top:5px; border-radius:10px; border:1px solid #ccc;">
+                                <option value="admin">Admin</option>
+                                <option value="editor">Editor</option>
+                                <option value="reader">Reader</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" 
+                            style="padding:12px 20px; background:#d60000; color:white; border:none; border-radius:10px; cursor:pointer;">
+                            Update Role
+                        </button>
+                    </form>
+                </div>
+
             @endif
         </div>
         
