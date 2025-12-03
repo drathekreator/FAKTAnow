@@ -51,7 +51,7 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'slug' => 'nullable|string|unique:articles,slug',
             'category_id' => 'required|exists:categories,id',
-            'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096', 
         ]);
 
         // 2. Pembuatan Slug Otomatis
@@ -59,15 +59,42 @@ class ArticleController extends Controller
         $validated['slug'] = $slug;
 
         // 3. Penanganan Upload File Thumbnail
-        $validated['thumbnail_url'] = null;
-        if ($request->hasFile('thumbnail_file')) {
-            $path = $request->file('thumbnail_file')->store('public/thumbnails');
-            $validated['thumbnail_url'] = Storage::url($path);
+        $thumbnailUrl = null;
+        if ($request->hasFile('thumbnail_file') && $request->file('thumbnail_file')->isValid()) {
+            try {
+                $file = $request->file('thumbnail_file');
+                
+                // Generate unique filename
+                $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                
+                // Store file di public disk
+                $path = $file->storeAs('thumbnails', $filename, 'public');
+                
+                // Generate URL
+                $thumbnailUrl = '/storage/' . $path;
+                
+                \Log::info('Thumbnail uploaded successfully', [
+                    'path' => $path,
+                    'url' => $thumbnailUrl,
+                    'full_path' => storage_path('app/public/' . $path)
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Thumbnail upload failed', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                
+                return back()->withInput()->with('error', 'Gagal mengupload thumbnail: ' . $e->getMessage());
+            }
         }
         
-        // 4. Tambahkan user_id dan status default
+        // 4. Tambahkan data ke validated
+        $validated['thumbnail_url'] = $thumbnailUrl;
         $validated['user_id'] = Auth::id();
         $validated['status'] = 'draft'; 
+        
+        // Remove thumbnail_file dari validated karena bukan kolom database
+        unset($validated['thumbnail_file']);
         
         // 5. Simpan data
         Article::create($validated);
@@ -121,24 +148,51 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'slug' => 'nullable|string|unique:articles,slug,' . $article->id,
             'category_id' => 'required|exists:categories,id',
-            'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
         ]);
         
         // 2. Pembuatan Slug Otomatis (jika judul berubah dan slug kosong)
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
         
         // 3. Penanganan Upload File Thumbnail Baru
-        if ($request->hasFile('thumbnail_file')) {
-            // Hapus file lama jika ada 
-            if ($article->thumbnail_url) {
-                $pathToDelete = Str::replaceFirst('/storage/', 'public/', $article->thumbnail_url);
-                Storage::delete($pathToDelete);
-            }
+        if ($request->hasFile('thumbnail_file') && $request->file('thumbnail_file')->isValid()) {
+            try {
+                // Hapus file lama jika ada 
+                if ($article->thumbnail_url) {
+                    $oldPath = Str::replaceFirst('/storage/', '', $article->thumbnail_url);
+                    Storage::disk('public')->delete($oldPath);
+                    
+                    \Log::info('Old thumbnail deleted', ['path' => $oldPath]);
+                }
 
-            // Upload file baru
-            $path = $request->file('thumbnail_file')->store('public/thumbnails');
-            $validated['thumbnail_url'] = Storage::url($path);
+                // Upload file baru
+                $file = $request->file('thumbnail_file');
+                
+                // Generate unique filename
+                $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                
+                // Store file di public disk
+                $path = $file->storeAs('thumbnails', $filename, 'public');
+                
+                // Generate URL
+                $validated['thumbnail_url'] = '/storage/' . $path;
+                
+                \Log::info('New thumbnail uploaded', [
+                    'path' => $path,
+                    'url' => $validated['thumbnail_url']
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Thumbnail update failed', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                
+                return back()->withInput()->with('error', 'Gagal mengupdate thumbnail: ' . $e->getMessage());
+            }
         }
+        
+        // Remove thumbnail_file dari validated karena bukan kolom database
+        unset($validated['thumbnail_file']);
 
         // 4. Update data
         $article->update($validated);
@@ -159,8 +213,17 @@ class ArticleController extends Controller
         
         // 1. Hapus file thumbnail dari storage (jika ada)
         if ($article->thumbnail_url) {
-            $pathToDelete = Str::replaceFirst('/storage/', 'public/', $article->thumbnail_url);
-            Storage::delete($pathToDelete);
+            try {
+                $path = Str::replaceFirst('/storage/', '', $article->thumbnail_url);
+                Storage::disk('public')->delete($path);
+                
+                \Log::info('Thumbnail deleted on article destroy', ['path' => $path]);
+            } catch (\Exception $e) {
+                \Log::error('Failed to delete thumbnail', [
+                    'error' => $e->getMessage(),
+                    'article_id' => $article->id
+                ]);
+            }
         }
         
         // 2. Hapus data artikel

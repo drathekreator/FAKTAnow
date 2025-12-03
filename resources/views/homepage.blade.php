@@ -145,7 +145,7 @@
                     Berita Terkini
                 @endif
             </h1>
-            <p class="text-gray-600 dark:text-gray-400">Menyajikan informasi aktual dan terpercaya untuk Anda</p>
+            <p class="text-gray-600 dark:text-gray-400">Menyajikan informasi FAHHHtual dan terpercaya untuk Anda</p>
         </div>
 
         @if (session('error'))
@@ -275,7 +275,7 @@
                         <h3 class="text-2xl font-black tracking-tight">FAKTAnow</h3>
                     </div>
                     <p class="text-red-100 dark:text-red-200 text-sm leading-relaxed mb-6">
-                        Platform berita digital yang menyajikan informasi terkini dengan standar jurnalisme berkualitas. Berdedikasi untuk memberikan fakta tanpa bias.
+                        Platform berita FAHHHtual dan terkini. Sesuai logo perusahaan, platform ini menjunjung tinggi kredibilitas berita karena seperti kata pepatah "sudah jatuh ketiban FAKTA".
                     </p>
                     <div class="text-red-200 dark:text-red-300 text-sm space-y-2">
                         <p class="flex items-center gap-2">
@@ -283,13 +283,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            Jakarta, Indonesia
+                            Bogor, Indonesia
                         </p>
                         <p class="flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            redaksi@faktanow.com
+                            faktanow@gmail.com
                         </p>
                     </div>
                 </div>
@@ -320,7 +320,7 @@
             
             <!-- Copyright -->
             <div class="border-t border-red-600 dark:border-red-800 mt-10 pt-6 text-center text-red-300 dark:text-red-400 text-sm">
-                &copy; {{ date('Y') }} FAKTAnow. All rights reserved.
+               Semua Copyright Hanya Milik Allah SWT &copy; {{ date('Y') }} FAKTAnow. All rights reserved. 
             </div>
         </div>
     </footer>

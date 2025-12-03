@@ -28,6 +28,43 @@
 - Unique constraint to prevent duplicate likes
 - Cascade delete on user and article deletion
 
+## [1.1.1] - 2025-12-03
+
+### 🔧 Database & Seeder Fixes
+- **CategorySeeder**: Improved seeder dengan timestamps dan feedback messages
+- **DatabaseSeeder**: Added CategorySeeder to default seeding process
+- **Migration Fix**: Resolved category table structure issues
+- **Documentation**: Added comprehensive SEEDING_GUIDE.md
+
+### 📸 Thumbnail Upload Improvements
+- **ArticleController**: Completely refactored thumbnail upload logic
+  - Better error handling with try-catch blocks
+  - Proper file validation (jpeg, png, gif, webp up to 4MB)
+  - Unique filename generation with timestamps
+  - Correct storage disk usage (`Storage::disk('public')`)
+  - Proper URL generation (`/storage/thumbnails/...`)
+  - Logging for debugging
+  - Old thumbnail deletion on update
+- **AdminController**: Updated thumbnail deletion logic
+- **Storage Configuration**: Verified and tested
+- **Documentation**: Added THUMBNAIL_TROUBLESHOOTING.md
+- **Test Script**: Created test_storage.php for verification
+
+### 🐛 Bug Fixes
+- Fixed thumbnail not storing in correct location
+- Fixed thumbnail URL generation
+- Fixed old thumbnail not being deleted on update
+- Fixed storage disk reference (was using wrong path format)
+- Added proper error messages for upload failures
+
+### ✅ Verified Features
+- Categories now properly seed and display in navbar
+- Categories appear in article create/edit forms
+- All 7 default categories working correctly
+- Thumbnail upload and storage working correctly
+- Thumbnail display in views working
+- Old thumbnail deletion on update working
+
 ## [1.1.0] - 2025-12-03
 
 ### ✨ Major UI/UX Improvements
