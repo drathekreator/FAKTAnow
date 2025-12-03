@@ -1,297 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js' ])
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-        .navbar {
-            background: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .navbar h1 {
-            color: #d60000;
-            margin: 0;
-        }
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 40px auto;
-        }
-        .title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 22px;
-            color: #d60000;
-        }
-        .card p {
-            margin: 0 0 15px;
-            color: #444;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background: #d60000;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-        }
-        .btn:hover {
-            background: #b20000;
-        }
-        /* Style Tabel */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .data-table th {
-            background-color: #f8f8f8;
-            color: #333;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .data-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        .action-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .btn-delete {
-            background: #d60000;
-            color: white;
-            border: none;
-        }
-        .btn-delete:hover {
-            background: #b20000;
-        }
-    </style>
+    <title>Dashboard Admin - FAKTAnow</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
-    <div class="navbar">
-        <h1>FAKTAnow Admin</h1>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn" style="background: #444; border: none; cursor: pointer;">
-                Logout
-            </button>
-        </form>
-    </div>
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('icons/Logo_FAKTA_now 1.png') }}" alt="FAKTAnow Logo" class="h-8 w-8 object-contain">
+                    <h1 class="text-xl font-black">
+                        <span class="text-red-600">FAKTA</span><span class="text-gray-800 dark:text-white">now</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">Admin</span>
+                    </h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="/" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition">
+                        Ke Homepage
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-gray-700 dark:bg-gray-600 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <div class="title">Dashboard Admin</div>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <h2 class="text-3xl font-black text-gray-900 dark:text-white mb-8">Dashboard Admin</h2>
 
+        <!-- Notifications -->
         @if (session('success'))
-            <div class="p-3 mb-4 bg-green-100 text-green-700 rounded-md shadow">
+            <div class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-400 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
-            <div class="p-3 mb-4 bg-red-100 text-red-700 rounded-md shadow">
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg">
                 {{ session('error') }}
             </div>
         @endif
 
-        <div class="grid">
-            <div class="card">
-                <h2>Kelola Berita</h2>
-                <p>Total Artikel Saat Ini: **{{ count($articles) }}**</p>
-                <a href="{{ route('editor.dashboard') }}" class="btn">Masuk</a>
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kelola Artikel</h3>
+                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <p class="text-3xl font-black text-red-600 mb-4">{{ count($articles) }}</p>
+                <a href="{{ route('admin.review.index') }}" class="inline-flex items-center text-sm font-semibold text-red-600 dark:text-red-400 hover:underline">
+                    Review Artikel
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="card" style="border-left: 6px solid red;">
-                <h2>Kelola User</h2>
-                <p>Total User (Non-Admin): **{{ count($users) }}**</p>
-                <a href="#user-management" class="btn" style="background:#444;">Kelola User</a>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kelola User</h3>
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <p class="text-3xl font-black text-blue-600 mb-4">{{ count($users) }}</p>
+                <a href="#user-management" class="inline-flex items-center text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                    Kelola User
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="card">
-                <h2>Laporan Berita</h2>
-                <p>Lihat statistik berita & aktivitas user.</p>
-                <a href="#" class="btn">Lihat</a>
-            </div>
+
         </div>
 
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
-        
-        <div id="user-management">
-            <h2 class="title" style="font-size: 24px;">Manajemen Pengguna ({{ count($users) }})</h2>
+        <!-- User Management -->
+        <div id="user-management" class="mb-12">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Manajemen Pengguna ({{ count($users) }})</h3>
             
             @if ($users->isEmpty())
-                <p>Tidak ada pengguna yang terdaftar selain Anda.</p>
-            @else
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Terdaftar Sejak</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                            <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    <form action="{{ route('admin.users.updateRole', $user->id) }}" method="POST">
-                                        @csrf
-                                        @method('PATCH')
-                                        
-                                        <select name="role" onchange="this.form.submit()" 
-                                            style="
-                                            padding: 5px 10px;
-                                            border-radius: 5px;
-                                            border: 1px solid #ccc; 
-                                            cursor: pointer; 
-                                            font-weight: bold;
-                                            background-color: {{ $user->role == 'admin' ? '#ffebeb' : ($user->role == 'editor' ? '#e6f7ff' : '#fff') }};
-                                            color: {{ $user->role == 'admin' ? '#d60000' : ($user->role == 'editor' ? '#007bff' : '#333') }};">
-                                            
-                                            <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>USER</option>
-                                            <option value="editor" {{ $user->role == 'editor' ? 'selected' : '' }}>EDITOR</option>
-                                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>ADMIN</option>
-                                        
-                                        </select>
-                                        
-                                        <input type="hidden" name="scroll_position" class="scroll-pos">
-                                    </form>
-                                </td>
-                                <td>{{ $user->created_at->format('d M Y') }}</td>
-                                <td>
-                                    <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('PERINGATAN: Yakin ingin menghapus pengguna {{ $user->name }}? Aksi ini tidak dapat dibatalkan.');" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn btn-delete">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <!-- Form Edit Role User -->
-                <div style="margin-top: 40px; background:white; padding:25px; border-radius:15px; box-shadow:0 5px 12px rgba(0,0,0,0.08);">
-                    <h2 style="margin-bottom:20px; font-size:22px; color:#d60000;">Edit Role Pengguna</h2>
-
-                    <form action="{{ route('admin.users.updateRole') }}" method="POST">
-                        @csrf
-                        <div style="margin-bottom: 15px;">
-                            <label for="user_id" style="font-weight:bold;">Pilih User</label>
-                            <select name="user_id" id="user_id" 
-                                style="width:100%; padding:10px; margin-top:5px; border-radius:10px; border:1px solid #ccc;">
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }} — {{ $user->email }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div style="margin-bottom: 20px;">
-                            <label for="role" style="font-weight:bold;">Pilih Role Baru</label>
-                            <select name="role" id="role" 
-                                style="width:100%; padding:10px; margin-top:5px; border-radius:10px; border:1px solid #ccc;">
-                                <option value="admin">Admin</option>
-                                <option value="editor">Editor</option>
-                                <option value="reader">Reader</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" 
-                            style="padding:12px 20px; background:#d60000; color:white; border:none; border-radius:10px; cursor:pointer;">
-                            Update Role
-                        </button>
-                    </form>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center border border-gray-200 dark:border-gray-700">
+                    <p class="text-gray-600 dark:text-gray-400">Tidak ada pengguna yang terdaftar selain Anda.</p>
                 </div>
-
+            @else
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Terdaftar</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach ($users as $user)
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                        <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $user->id }}</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $user->name }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
+                                        <td class="px-6 py-4">
+                                            <form action="{{ route('admin.users.updateRole', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <select name="role" onchange="this.form.submit()" 
+                                                    class="px-3 py-1.5 text-sm font-semibold rounded-lg border-0 cursor-pointer transition
+                                                    {{ $user->role == 'admin' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 
+                                                       ($user->role == 'editor' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' : 
+                                                       'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300') }}">
+                                                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>USER</option>
+                                                    <option value="editor" {{ $user->role == 'editor' ? 'selected' : '' }}>EDITOR</option>
+                                                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>ADMIN</option>
+                                                </select>
+                                            </form>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->created_at->format('d M Y') }}</td>
+                                        <td class="px-6 py-4">
+                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" 
+                                                  onsubmit="return confirm('PERINGATAN: Yakin ingin menghapus pengguna {{ $user->name }}?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="px-3 py-1.5 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             @endif
         </div>
-        
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
-        
+
+        <!-- Article Management -->
         <div>
-            <h2 class="title" style="font-size: 24px;">Manajemen Artikel</h2>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Manajemen Artikel ({{ count($articles) }})</h3>
             
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Judul</th>
-                        <th>Penulis</th>
-                        <th>Status</th>
-                        <th>Dibuat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($articles as $article)
-                        <tr>
-                            <td>{{ $article->id }}</td>
-                            <td>{{ $article->title }}</td>
-                            <td>{{ $article->user->name }}</td> 
-                            <td>Draft/Publish</td>
-                            <td>{{ $article->created_at->format('d M Y') }}</td>
-                            <td>
-                                <a hrelf="{{ route('articles.edit', $article) }}" class="action-btn" style="background:#007bff; color:white;">Edit</a>
-                                
-                                <form action="{{ route('articles.destroy', $article) }}" method="POST" onsubmit="return confirm('Yakin hapus artikel?');" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="action-btn btn-delete">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    <tr><td colspan="6">Data artikel akan muncul di sini setelah Model Article dan Route Management Artikel diimplementasikan.</td></tr>
-                </tbody>
-            </table>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Judul</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Penulis</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Dibuat</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach ($articles as $article)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $article->id }}</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ Str::limit($article->title, 50) }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $article->user->name }}</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-3 py-1 text-xs font-bold rounded-full
+                                            {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
+                                               ($article->status == 'draft' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' : 
+                                               'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400') }}">
+                                            {{ strtoupper($article->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $article->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <a href="{{ route('articles.edit', $article->slug) }}" 
+                                               class="px-3 py-1.5 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('admin.articles.destroy', $article->slug) }}" method="POST" 
+                                                  onsubmit="return confirm('Yakin hapus artikel?');" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="px-3 py-1.5 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

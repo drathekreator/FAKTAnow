@@ -12,9 +12,12 @@ use App\Http\Controllers\homePageController;
 // 1. ROUTE PUBLIK DAN GUEST
 // ---------------------------------------------------------------------
 
-Route::get('/', function () {
-    return view('homepage');
-});
+Route::get('/', [homePageController::class, 'index'])->name('home');
+Route::get('/category/{category:slug}', [homePageController::class, 'byCategory'])->name('category.show');
+
+// Menampilkan detail satu berita full
+Route::get('/article/{article:slug}', [homePageController::class, 'show'])->name('article.show');
+
 
 // Route OTENTIKASI KUSTOM
 Route::middleware('guest')->group(function () {
@@ -73,4 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // KITA PERTAHANKAN NAMA ROUTE 'articles' AGAR LINK TOMBOL TIDAK RUSAK
             ->names('articles');
     });
+    
+    // ---------------------------------------------------------------------
+    // 5. ROUTE KOMENTAR & LIKE (Untuk user yang sudah login)
+    // ---------------------------------------------------------------------
+    Route::post('/article/{article:slug}/comment', [\App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
+    Route::post('/article/{article:slug}/like', [\App\Http\Controllers\LikeController::class, 'toggle'])->name('articles.like');
 });

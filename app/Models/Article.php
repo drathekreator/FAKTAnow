@@ -56,4 +56,29 @@ class Article extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Relasi One-to-Many: Article memiliki banyak Like.
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
+     * Check if user has liked this article
+     */
+    public function isLikedBy($user): bool
+    {
+        if (!$user) return false;
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get total likes count
+     */
+    public function likesCount(): int
+    {
+        return $this->likes()->count();
+    }
 }

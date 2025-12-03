@@ -49,7 +49,8 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'slug' => 'nullable|string|unique:articles,slug', 
+            'slug' => 'nullable|string|unique:articles,slug',
+            'category_id' => 'required|exists:categories,id',
             'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
@@ -118,7 +119,8 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'slug' => 'nullable|string|unique:articles,slug,' . $article->id, 
+            'slug' => 'nullable|string|unique:articles,slug,' . $article->id,
+            'category_id' => 'required|exists:categories,id',
             'thumbnail_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         
