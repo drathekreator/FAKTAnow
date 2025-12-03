@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed Categories first (required for articles)
+        $this->call(CategorySeeder::class);
+        
         // User::factory(10)->create();
 
         User::factory()->create([
@@ -22,9 +25,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(UserSeeder::class);
-    // Jika Anda sudah punya ArticleSeeder dan CommentSeeder, panggil juga di sini.
-    // $this->call(ArticleSeeder::class); 
-    // $this->call(CommentSeeder::class);
+        // $this->call(UserSeeder::class);
+        
+        // Jika Anda sudah punya ArticleSeeder dan CommentSeeder, panggil juga di sini.
+        // $this->call(ArticleSeeder::class); 
+        // $this->call(CommentSeeder::class);
     }
 }
