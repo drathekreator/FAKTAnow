@@ -26,9 +26,14 @@ class AdminController extends Controller
         // 2. Ambil data Artikel (Admin melihat SEMUA)
         // Eager load relasi 'user' (penulis) untuk ditampilkan di tabel
         $articles = Article::with('user')->latest()->get(); 
-        
-        // Tampilkan view dashboard admin dan kirim data
-        return view('admin.dashboard', compact('users', 'articles'));
+
+         // Tampilkan view dashboard admin dan kirim data
+
+        // return view('admin.dashboard', data: compact('users', 'articles'));
+        return view('admin.dashboard', [
+            'users'=> $users,
+            'articles'=> $articles
+        ]);
     }
 
     /**

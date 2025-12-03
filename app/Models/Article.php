@@ -14,6 +14,7 @@ class Article extends Model
     // --- Mass Assignment Protection ---
     protected $fillable = [
         'user_id',
+        'category_id',
         'title',
         'slug',
         'content',
@@ -37,7 +38,9 @@ class Article extends Model
 
 
     // --- Relasi Eloquent ---
-
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
     /**
      * Relasi One-to-One/One-to-Many: Article dimiliki oleh satu User (Penulis).
      */
