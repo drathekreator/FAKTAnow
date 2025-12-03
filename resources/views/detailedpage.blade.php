@@ -31,7 +31,7 @@
                 
                 <div class="flex items-center gap-3">
                     @auth
-                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : (Auth::user()->role === 'editor' ? route('editor.dashboard') : route('profile.edit')) }}" 
+                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : (Auth::user()->role === 'editor' ? route('editor.dashboard') : route('home')) }}" 
                            class="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400 transition">
                             {{ Str::limit(Auth::user()->name, 15) }}
                         </a>

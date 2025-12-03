@@ -22,7 +22,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <a href="/" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition">
-                        Ke Homepage
+                        Homepage
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

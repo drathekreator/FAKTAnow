@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    // ... (kode properti)
-
-    public const HOME = '/dashboard'; 
-    // ^ Pastikan ini tidak diarahkan ke '/editor/dashboard' atau '/admin/dashboard'
+    /**
+     * Konstanta HOME menentukan redirect default setelah login/register
+     * 
+     * Diubah dari '/dashboard' ke '/' (homepage) agar member langsung
+     * melihat daftar berita, bukan halaman dashboard kosong.
+     * 
+     * @var string
+     */
+    public const HOME = '/';
 
     public function boot(): void
     {

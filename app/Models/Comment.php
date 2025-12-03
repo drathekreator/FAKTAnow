@@ -6,23 +6,46 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Model Comment
+ * 
+ * Model ini merepresentasikan tabel 'comments' yang menyimpan komentar pada artikel.
+ * 
+ * Kolom utama:
+ * - user_id: ID user yang memberikan komentar
+ * - article_id: ID artikel yang dikomentari
+ * - content: Isi komentar
+ * - is_approved: Status approval komentar (true/false)
+ * 
+ * Relasi:
+ * - Belongs To User: Setiap komentar dimiliki oleh satu user
+ * - Belongs To Article: Setiap komentar terkait dengan satu artikel
+ */
 class Comment extends Model
 {
     use HasFactory;
 
-    // --- Mass Assignment Protection ---
-    // Kolom yang dapat diisi secara mass assignment (sesuai dengan kolom di migration)
+    /**
+     * Kolom yang dapat diisi secara mass assignment
+     * 
+     * @var array
+     */
     protected $fillable = [
-        'user_id',
-        'article_id',
-        'content',
-        'is_approved',
+        'user_id',       // ID user yang memberikan komentar
+        'article_id',    // ID artikel yang dikomentari
+        'content',       // Isi komentar
+        'is_approved',   // Status approval (true = disetujui, false = menunggu moderasi)
     ];
 
-    // --- Relasi Eloquent ---
+    // ========================================================================
+    // RELASI ELOQUENT
+    // ========================================================================
 
     /**
-     * Relasi: Comment dimiliki oleh satu User (Pengirim).
+     * Relasi ke model User
+     * Mendefinisikan bahwa setiap komentar dimiliki oleh satu user (pemberi komentar)
+     * 
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -30,11 +53,13 @@ class Comment extends Model
     }
 
     /**
-     * Relasi: Comment dimiliki oleh satu Article.
+     * Relasi ke model Article
+     * Mendefinisikan bahwa setiap komentar terkait dengan satu artikel
+     * 
+     * @return BelongsTo
      */
     public function article(): BelongsTo
     {
-        // Mendefinisikan bahwa kolom article_id di tabel comments merujuk ke id di tabel articles
         return $this->belongsTo(Article::class);
     }
 }
