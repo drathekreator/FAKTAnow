@@ -35,12 +35,17 @@ class CheckUserRole
      * 2. Apakah role user sesuai dengan yang diminta?
      * 3. Jika tidak sesuai, redirect dengan pesan error
      * 
+     * SUPPORT MULTIPLE ROLES:
+     * Middleware ini sekarang mendukung multiple roles dengan pemisah koma
+     * Contoh: Route::middleware('role:admin,editor')
+     * 
      * @param Request $request Request yang masuk
      * @param Closure $next Closure untuk melanjutkan request ke controller
-     * @param string $role Role yang diizinkan (contoh: 'admin', 'editor', 'user')
+     * @param string $roles Role yang diizinkan (bisa single atau multiple dengan koma)
+     *                      Contoh: 'admin' atau 'admin,editor' atau 'admin,editor,user'
      * @return Response Response yang akan dikembalikan
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $roles): Response
     {
         // STEP 1: Cek apakah user sudah login
         // Auth::check() return true jika user sudah login, false jika belum
@@ -49,20 +54,28 @@ class CheckUserRole
             return redirect('/login');
         }
 
-        // STEP 2: Cek apakah role user sesuai dengan yang diminta
-        // Auth::user() mengakses data user yang sedang login
-        // $role adalah parameter yang dikirim dari route (contoh: 'admin', 'editor')
+        // STEP 2: Parse multiple roles (jika ada)
+        // Pisahkan string roles berdasarkan koma menjadi array
+        // Contoh: 'admin,editor' menjadi ['admin', 'editor']
+        $allowedRoles = explode(',', $roles);
+        
+        // Ambil role user yang sedang login
+        $userRole = Auth::user()->role;
+
+        // STEP 3: Cek apakah role user ada di dalam daftar role yang diizinkan
+        // in_array() mengecek apakah $userRole ada di dalam array $allowedRoles
         // 
         // Contoh:
-        // - Route: Route::middleware('role:admin')
-        // - Maka $role = 'admin'
-        // - Cek: Auth::user()->role === 'admin'
-        if (Auth::user()->role === $role) {
+        // - Route: Route::middleware('role:admin,editor')
+        // - Maka $allowedRoles = ['admin', 'editor']
+        // - User role = 'editor'
+        // - in_array('editor', ['admin', 'editor']) = true ✓
+        if (in_array($userRole, $allowedRoles)) {
             // Jika role cocok, izinkan request melanjutkan ke controller
             return $next($request);
         }
 
-        // STEP 3: Jika role tidak cocok (Akses Ditolak)
+        // STEP 4: Jika role tidak cocok (Akses Ditolak)
         // Redirect kembali ke homepage dengan pesan error
         return redirect('/')->with('error', 'Akses Ditolak. Anda tidak memiliki izin untuk melihat halaman ini.');
         
