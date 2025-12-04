@@ -76,12 +76,29 @@ if (is_writable(__DIR__ . '/bootstrap/cache')) {
 
 // Check 6: Storage link exists
 echo "Checking storage link... ";
-if (is_link(__DIR__ . '/public/storage')) {
+$storageLink = __DIR__ . '/public/storage';
+if (is_link($storageLink) || is_dir($storageLink)) {
     echo "✅ Exists\n";
     $success[] = "Storage link created";
+    
+    // Additional check: Verify thumbnails directory
+    echo "Checking thumbnails directory... ";
+    $thumbnailsDir = __DIR__ . '/storage/app/public/thumbnails';
+    if (is_dir($thumbnailsDir)) {
+        if (is_writable($thumbnailsDir)) {
+            echo "✅ Exists and writable\n";
+            $success[] = "Thumbnails directory ready";
+        } else {
+            echo "⚠️  WARNING (not writable)\n";
+            $warnings[] = "Thumbnails directory not writable. Run: chmod 775 storage/app/public/thumbnails";
+        }
+    } else {
+        echo "⚠️  WARNING (not found)\n";
+        $warnings[] = "Thumbnails directory not found. Run: mkdir -p storage/app/public/thumbnails";
+    }
 } else {
-    echo "⚠️  WARNING\n";
-    $warnings[] = "Storage link not found. Run: php artisan storage:link";
+    echo "❌ FAIL\n";
+    $errors[] = "Storage link not found. Run: php artisan storage:link";
 }
 
 // Check 7: Vendor directory exists
