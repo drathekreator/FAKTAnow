@@ -104,6 +104,13 @@ class ArticleController extends Controller
             try {
                 $file = $request->file('thumbnail_file');
                 
+                // Pastikan folder thumbnails ada (penting untuk production)
+                $thumbnailsPath = storage_path('app/public/thumbnails');
+                if (!file_exists($thumbnailsPath)) {
+                    mkdir($thumbnailsPath, 0775, true);
+                    \Log::info('Thumbnails directory created', ['path' => $thumbnailsPath]);
+                }
+                
                 // Generate nama file unik dengan timestamp untuk menghindari duplikasi
                 // Format: 1234567890_nama-file.jpg
                 $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
@@ -111,15 +118,16 @@ class ArticleController extends Controller
                 // Simpan file ke folder storage/app/public/thumbnails
                 $path = $file->storeAs('thumbnails', $filename, 'public');
                 
-                // Generate URL yang bisa diakses publik
-                // Format: /storage/thumbnails/1234567890_nama-file.jpg
-                $thumbnailUrl = '/storage/' . $path;
+                // Generate URL yang bisa diakses publik menggunakan Storage::url()
+                // Ini lebih reliable untuk production karena menggunakan konfigurasi dari filesystems.php
+                $thumbnailUrl = Storage::disk('public')->url($path);
                 
                 // Log untuk debugging jika diperlukan
                 \Log::info('Thumbnail uploaded successfully', [
                     'path' => $path,
                     'url' => $thumbnailUrl,
-                    'full_path' => storage_path('app/public/' . $path)
+                    'full_path' => storage_path('app/public/' . $path),
+                    'disk_url' => Storage::disk('public')->url($path)
                 ]);
             } catch (\Exception $e) {
                 // Jika upload gagal, log error dan kembalikan ke form dengan pesan error
@@ -232,11 +240,22 @@ class ArticleController extends Controller
             try {
                 // Hapus file thumbnail lama dari storage jika ada
                 if ($article->thumbnail_url) {
-                    // Konversi URL menjadi path: /storage/thumbnails/file.jpg -> thumbnails/file.jpg
-                    $oldPath = Str::replaceFirst('/storage/', '', $article->thumbnail_url);
-                    Storage::disk('public')->delete($oldPath);
+                    // Extract path dari URL untuk menghapus file lama
+                    // Support berbagai format URL: /storage/thumbnails/file.jpg atau full URL
+                    $oldPath = parse_url($article->thumbnail_url, PHP_URL_PATH);
+                    $oldPath = Str::replaceFirst('/storage/', '', $oldPath);
                     
-                    \Log::info('Old thumbnail deleted', ['path' => $oldPath]);
+                    if (Storage::disk('public')->exists($oldPath)) {
+                        Storage::disk('public')->delete($oldPath);
+                        \Log::info('Old thumbnail deleted', ['path' => $oldPath]);
+                    }
+                }
+
+                // Pastikan folder thumbnails ada (penting untuk production)
+                $thumbnailsPath = storage_path('app/public/thumbnails');
+                if (!file_exists($thumbnailsPath)) {
+                    mkdir($thumbnailsPath, 0775, true);
+                    \Log::info('Thumbnails directory created', ['path' => $thumbnailsPath]);
                 }
 
                 // Upload file thumbnail baru
@@ -248,12 +267,15 @@ class ArticleController extends Controller
                 // Simpan file ke storage/app/public/thumbnails
                 $path = $file->storeAs('thumbnails', $filename, 'public');
                 
-                // Generate URL publik
-                $validated['thumbnail_url'] = '/storage/' . $path;
+                // Generate URL publik menggunakan Storage::url()
+                // Ini lebih reliable untuk production
+                $validated['thumbnail_url'] = Storage::disk('public')->url($path);
                 
                 \Log::info('New thumbnail uploaded', [
                     'path' => $path,
-                    'url' => $validated['thumbnail_url']
+                    'url' => $validated['thumbnail_url'],
+                    'full_path' => storage_path('app/public/' . $path),
+                    'disk_url' => Storage::disk('public')->url($path)
                 ]);
             } catch (\Exception $e) {
                 // Jika upload gagal, log error dan kembalikan ke form
@@ -306,11 +328,15 @@ class ArticleController extends Controller
         // STEP 1: Hapus file thumbnail dari storage (jika ada)
         if ($article->thumbnail_url) {
             try {
-                // Konversi URL menjadi path: /storage/thumbnails/file.jpg -> thumbnails/file.jpg
-                $path = Str::replaceFirst('/storage/', '', $article->thumbnail_url);
-                Storage::disk('public')->delete($path);
+                // Extract path dari URL untuk menghapus file
+                // Support berbagai format URL: /storage/thumbnails/file.jpg atau full URL
+                $path = parse_url($article->thumbnail_url, PHP_URL_PATH);
+                $path = Str::replaceFirst('/storage/', '', $path);
                 
-                \Log::info('Thumbnail deleted on article destroy', ['path' => $path]);
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                    \Log::info('Thumbnail deleted on article destroy', ['path' => $path]);
+                }
             } catch (\Exception $e) {
                 // Log error tapi tetap lanjutkan penghapusan artikel
                 \Log::error('Failed to delete thumbnail', [

@@ -27,9 +27,14 @@ php artisan view:clear
 echo "🗄️  Running database migrations..."
 php artisan migrate --force
 
-# Step 5: Create Storage Link
+# Step 5: Create Storage Link (CRITICAL untuk image upload)
 echo "🔗 Creating storage link..."
-php artisan storage:link
+php artisan storage:link --force
+
+# Step 5.1: Ensure thumbnails directory exists
+echo "📁 Creating thumbnails directory..."
+mkdir -p storage/app/public/thumbnails
+chmod 775 storage/app/public/thumbnails
 
 # Step 6: Seed Database (if needed)
 echo "🌱 Seeding database..."

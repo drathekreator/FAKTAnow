@@ -1,5 +1,16 @@
 # 🚀 Zeabur Deployment Guide - FAKTAnow
 
+## ✨ Automated Features
+
+**FAKTAnow sekarang memiliki automation lengkap untuk production!**
+
+✅ **Storage Link**: Otomatis dibuat setiap deploy & restart  
+✅ **Thumbnails Directory**: Otomatis dibuat dengan permissions yang benar  
+✅ **Permissions**: Otomatis di-set untuk storage dan cache  
+✅ **Self-Healing**: Verify dan recreate jika ada masalah  
+
+**Tidak perlu manual intervention!** Lihat `STORAGE_LINK_AUTOMATION.md` untuk detail.
+
 ## 📋 Prerequisites
 
 1. **Zeabur Account** - Sign up at https://zeabur.com

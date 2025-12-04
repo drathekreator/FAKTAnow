@@ -126,15 +126,20 @@ class AdminController extends Controller
         // STEP 1: Hapus file thumbnail dari storage (jika ada)
         if ($article->thumbnail_url) {
             try {
-                // Konversi URL menjadi path: /storage/thumbnails/file.jpg -> thumbnails/file.jpg
-                $path = Str::replaceFirst('/storage/', '', $article->thumbnail_url);
-                Storage::disk('public')->delete($path);
+                // Extract path dari URL untuk menghapus file
+                // Support berbagai format URL: /storage/thumbnails/file.jpg atau full URL
+                $path = parse_url($article->thumbnail_url, PHP_URL_PATH);
+                $path = Str::replaceFirst('/storage/', '', $path);
                 
-                // Log untuk audit trail
-                \Log::info('Admin deleted article thumbnail', [
-                    'article_id' => $article->id,
-                    'path' => $path
-                ]);
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                    
+                    // Log untuk audit trail
+                    \Log::info('Admin deleted article thumbnail', [
+                        'article_id' => $article->id,
+                        'path' => $path
+                    ]);
+                }
             } catch (\Exception $e) {
                 // Log error tapi tetap lanjutkan penghapusan artikel
                 \Log::error('Failed to delete thumbnail by admin', [

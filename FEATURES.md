@@ -264,7 +264,30 @@
 
 ---
 
-## 🆕 Changelog v1.4.1 (Latest)
+## 🆕 Changelog v1.4.2 (Latest)
+
+### Fixed - Image Upload di Production
+- ✅ **Fixed: Image upload tidak berfungsi di production (Zeabur)**
+- ✅ Menggunakan `Storage::url()` untuk generate URL yang lebih reliable
+- ✅ Auto-create folder thumbnails jika belum ada
+- ✅ Parse URL dengan `parse_url()` untuk support berbagai format URL
+- ✅ Safe delete: Cek file exists sebelum delete
+- ✅ Better error logging untuk debugging production
+- ✅ Script `fix-storage-production.sh` untuk perbaikan storage di server
+- ✅ Dokumentasi lengkap di `IMAGE_UPLOAD_PRODUCTION_FIX.md`
+
+### Added - Storage Link Automation
+- ✅ **AUTOMATION: Storage link otomatis dibuat setiap deploy & restart**
+- ✅ `startup.sh`: Script yang dijalankan setiap kali app start/restart
+- ✅ `Procfile`: Updated untuk menjalankan startup.sh
+- ✅ `zeabur.json`: Build & start commands dengan storage:link automation
+- ✅ `deploy.sh`: Updated dengan storage:link --force
+- ✅ `post-deploy-check.php`: Enhanced verification untuk storage & thumbnails
+- ✅ Self-healing: Verify dan recreate storage link jika hilang
+- ✅ Zero manual intervention needed untuk storage setup
+- ✅ Dokumentasi lengkap di `STORAGE_LINK_AUTOMATION.md`
+
+### Previous (v1.4.1)
 
 ### Fixed - CRITICAL BUG
 - ✅ **Fixed: Admin dan Editor kehilangan akses edit setelah update status**
@@ -296,4 +319,4 @@
 ---
 
 **Last Updated**: December 4, 2025
-**Version**: 1.4.1
+**Version**: 1.4.2
