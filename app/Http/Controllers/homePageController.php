@@ -20,7 +20,7 @@ use App\Models\Category;
  * 
  * @package App\Http\Controllers
  */
-class HomePageController extends Controller 
+class homePageController extends Controller 
 {
     /**
      * Menampilkan halaman utama dengan daftar artikel dan fitur pencarian
