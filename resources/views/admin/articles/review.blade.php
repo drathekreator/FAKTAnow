@@ -71,15 +71,10 @@
                                             @csrf
                                             @method('PUT')
                                             <select name="status" onchange="this.form.submit()" 
-                                                class="px-3 py-1.5 text-sm font-semibold rounded-lg border-0 cursor-pointer transition
-                                                {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
-                                                   ($article->status == 'draft' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' : 
-                                                   ($article->status == 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
-                                                   'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400')) }}">
-                                                <option value="draft" {{ $article->status == 'draft' ? 'selected' : '' }}>Draft</option>
-                                                <option value="pending" {{ $article->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="published" {{ $article->status == 'published' ? 'selected' : '' }}>Published</option>
-                                                <option value="rejected" {{ $article->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                class="px-3 py-1.5 text-xs font-bold rounded-full border-0 cursor-pointer transition
+                                                {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
+                                                <option value="draft" {{ $article->status == 'draft' ? 'selected' : '' }}>DRAFT</option>
+                                                <option value="published" {{ $article->status == 'published' ? 'selected' : '' }}>PUBLISHED</option>
                                             </select>
                                         </form>
                                     </td>

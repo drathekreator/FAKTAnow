@@ -334,18 +334,18 @@ class ArticleController extends Controller
     // ========================================================================
     
     /**
-     * Menampilkan daftar artikel yang perlu direview oleh admin
+     * Menampilkan daftar artikel draft yang perlu direview oleh admin
      * 
-     * Method ini menampilkan semua artikel dengan status draft, pending, atau rejected
+     * Method ini menampilkan semua artikel dengan status draft
      * yang perlu ditinjau dan disetujui oleh admin sebelum dipublikasikan.
      * 
      * @return View Halaman review artikel untuk admin
      */
     public function reviewIndex(): View
     {
-        // Ambil artikel yang statusnya draft, pending, atau rejected
+        // Ambil artikel yang statusnya draft
         // Diurutkan dari yang terbaru
-        $articles = Article::whereIn('status', ['draft', 'pending', 'rejected'])
+        $articles = Article::where('status', 'draft')
                            ->latest()
                            ->get();
                            
@@ -353,30 +353,28 @@ class ArticleController extends Controller
     }
 
     /**
-     * Mengupdate status artikel (approve/reject) oleh admin
+     * Mengupdate status artikel oleh admin
      * 
      * Method ini memungkinkan admin untuk mengubah status artikel:
-     * - draft: Masih dalam tahap penulisan
-     * - pending: Menunggu review admin
-     * - published: Disetujui dan dipublikasikan
-     * - rejected: Ditolak oleh admin
+     * - draft: Artikel dalam tahap penulisan/editing (bisa diedit)
+     * - published: Artikel dipublikasikan dan tampil di homepage
      * 
      * @param Request $request Data status baru dari form
      * @param Article $article Model artikel yang akan diupdate statusnya
-     * @return RedirectResponse Redirect ke halaman review dengan pesan sukses
+     * @return RedirectResponse Redirect ke dashboard admin dengan pesan sukses
      */
     public function updateStatus(Request $request, Article $article): RedirectResponse
     {
-        // Validasi: Status harus salah satu dari 4 pilihan yang valid
+        // Validasi: Status hanya draft atau published
         $validated = $request->validate([
-            'status' => 'required|in:draft,pending,published,rejected',
+            'status' => 'required|in:draft,published',
         ]);
         
         // Update status artikel
         $article->update(['status' => $validated['status']]);
         
-        // Redirect dengan pesan sukses
-        return redirect()->route('admin.review.index')
-                          ->with('success', "Status artikel '{$article->title}' berhasil diperbarui menjadi {$validated['status']}.");
+        // Redirect ke dashboard admin dengan pesan sukses
+        return redirect()->route('admin.dashboard')
+                          ->with('success', "Status artikel '{$article->title}' berhasil diubah menjadi " . strtoupper($validated['status']) . ".");
     }
 }
