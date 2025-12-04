@@ -39,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
         // View::composer('*', function($view){
         //     $view->with('categories', Categories::all());
         // });
+        // Ignore HTTPS
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
 
     }
 }
