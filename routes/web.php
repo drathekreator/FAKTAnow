@@ -100,11 +100,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Review dan moderasi artikel
         Route::get('/admin/articles/review', [ArticleController::class, 'reviewIndex'])->name('admin.review.index');
         Route::put('/admin/articles/{article}/status', [ArticleController::class, 'updateStatus'])->name('admin.articles.updateStatus');
-        
-        // Admin bisa edit semua artikel (termasuk yang sudah published)
-        // Menggunakan route yang sama dengan editor untuk konsistensi
-        Route::get('/editor/articles/{article}/edit', [ArticleController::class, 'edit'])->name('admin.articles.edit');
-        Route::put('/editor/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
     });
 
 
@@ -116,12 +111,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Dashboard editor: Menampilkan artikel milik editor yang sedang login
         Route::get('/editor/dashboard', [ArticleController::class, 'index'])->name('editor.dashboard');
         
-        // CRUD Resource untuk Artikel
-        // URI: /editor/articles/{id}
-        // Nama route: articles.create, articles.store, articles.edit, articles.update, articles.destroy
+        // CRUD Resource untuk Artikel (hanya create, store, destroy)
+        // Edit dan Update dipindahkan ke route bersama admin+editor di bawah
         Route::resource('editor/articles', ArticleController::class)
-            ->except(['index', 'show'])  // Index dan show sudah didefinisikan terpisah
-            ->names('articles');         // Gunakan nama 'articles' untuk konsistensi
+            ->only(['create', 'store', 'destroy'])
+            ->names('articles');
+    });
+
+    // =================================================================
+    // ROUTE EDIT ARTIKEL - Bisa diakses oleh ADMIN dan EDITOR
+    // =================================================================
+    Route::middleware(['auth', 'verified', 'role:admin,editor'])->group(function () {
+        // Route edit dan update artikel yang bisa diakses oleh admin DAN editor
+        // Authorization logic di controller akan menentukan siapa yang boleh edit artikel mana
+        Route::get('/editor/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+        Route::put('/editor/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
     });
     
     // =================================================================

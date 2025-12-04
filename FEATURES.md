@@ -264,20 +264,27 @@
 
 ---
 
-## 🆕 Changelog v1.4.0 (Latest)
+## 🆕 Changelog v1.4.1 (Latest)
 
-### Changed
+### Fixed - CRITICAL BUG
+- ✅ **Fixed: Admin dan Editor kehilangan akses edit setelah update status**
+- ✅ Updated middleware `CheckUserRole` untuk support multiple roles (admin,editor)
+- ✅ Restructure routes: Edit artikel sekarang bisa diakses oleh admin DAN editor
+- ✅ Admin tetap bisa edit semua artikel (authorization di controller)
+- ✅ Editor tetap bisa edit artikel miliknya sendiri (authorization di controller)
+- ✅ Akses edit tidak hilang lagi setelah update status artikel
+- ✅ Dokumentasi lengkap di `ARTICLE_EDIT_ACCESS_FIX.md`
+
+### Previous (v1.4.0)
 - ✅ **Simplified article status system**: Removed "Pending" and "Rejected" status
 - ✅ **Only 2 status options now**: Draft and Published
 - ✅ Draft articles can be edited by both editor (owner) and admin
 - ✅ Published articles can be edited by admin
 - ✅ Status dropdown updated in both admin dashboard and review page
 - ✅ Validation updated to only accept 'draft' and 'published'
-
-### Fixed
 - ✅ Draft articles can now be saved after editing (previously blocked)
-- ✅ Consistent route model binding for updateStatus (using $article instead of $article->slug)
-- ✅ Simplified CSS classes for status badges (only draft/published states)
+- ✅ Consistent route model binding for updateStatus
+- ✅ Simplified CSS classes for status badges
 
 ### Previous (v1.3.0)
 - ✅ Admin dapat mengubah status artikel langsung dari dashboard
@@ -289,4 +296,4 @@
 ---
 
 **Last Updated**: December 4, 2025
-**Version**: 1.4.0
+**Version**: 1.4.1
