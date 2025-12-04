@@ -5,9 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Routing\Router; // <-- Wajib di-import
-use App\Http\Middleware\CheckUserRole; // <-- Middleware kustom Anda
-use App\Http\Models\Category;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Routing\Router;
+use App\Http\Middleware\CheckUserRole;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,29 +20,28 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap any application services
+     * 
+     * Method ini dijalankan setelah semua service provider terdaftar.
+     * Digunakan untuk:
+     * - Mendaftarkan middleware custom
+     * - Force HTTPS di production
+     * - View composers (jika diperlukan)
      */
     public function boot(): void
     {
+        // STEP 1: Mendaftarkan middleware role custom
         // Mendapatkan instance Router
         $router = $this->app->make(Router::class);
-
-        // =======================================================
-        // PENDAFTARAN MIDDLEWARE ROLE (SOLUSI DARURAT)
-        // =======================================================
         
-        // Mendaftarkan alias 'role' agar bisa digunakan di route: middleware('role:admin')
+        // Mendaftarkan alias 'role' agar bisa digunakan di route
+        // Contoh: Route::middleware('role:admin')->group(...)
         $router->aliasMiddleware('role', CheckUserRole::class);
         
-        // ====================================================
-        // 
-        // View::composer('*', function($view){
-        //     $view->with('categories', Categories::all());
-        // });
-        // Ignore HTTPS
-        if($this->app->environment('production')) {
+        // STEP 2: Force HTTPS di production
+        // Zeabur menyediakan HTTPS gratis, jadi kita force semua URL menggunakan HTTPS
+        if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
-
     }
 }
