@@ -13,13 +13,15 @@
 ### 2. Manajemen Artikel ✅
 - [x] Create artikel (Editor)
 - [x] Read/View artikel (Public)
-- [x] Update artikel (Editor - owner only)
+- [x] Update artikel (Editor - owner only, **Admin - all articles**)
 - [x] Delete artikel (Editor - owner, Admin - all)
 - [x] Upload thumbnail artikel
 - [x] Auto-generate slug dari title
 - [x] Manual slug input
 - [x] Rich text content
 - [x] Status artikel (Draft, Published, Pending, Rejected)
+- [x] **BARU: Admin bisa ubah status artikel yang sudah published**
+- [x] **BARU: Admin bisa edit artikel published tanpa unpublish**
 - [x] View counter
 - [x] Kategori artikel
 - [x] Eager loading untuk optimasi query
@@ -49,9 +51,12 @@
 - [x] Overview statistik
 - [x] Manajemen user (view, delete, update role)
 - [x] Manajemen artikel (view, edit, delete)
+- [x] **BARU: Edit semua artikel (termasuk yang sudah published)**
+- [x] **BARU: Ubah status artikel langsung dari dashboard**
 - [x] Moderasi komentar
 - [x] Review artikel (update status)
 - [x] Dropdown role selector dengan auto-submit
+- [x] Dropdown status artikel dengan auto-submit
 
 ### 7. Dashboard Editor ✅
 - [x] Daftar artikel milik editor
@@ -258,5 +263,21 @@
 
 ---
 
-**Last Updated**: December 3, 2025
-**Version**: 1.0.0
+## 🆕 Changelog v1.3.0 (Latest)
+
+### Added
+- ✅ Admin dapat mengubah status artikel langsung dari dashboard
+- ✅ Admin dapat mengedit semua artikel (termasuk yang sudah published)
+- ✅ Dropdown status artikel dengan auto-submit di dashboard admin
+- ✅ Redirect otomatis berdasarkan role setelah edit artikel
+- ✅ Dokumentasi lengkap di ADMIN_ARTICLE_MANAGEMENT.md
+
+### Improved
+- ✅ Otorisasi edit artikel (admin bisa edit semua, editor hanya milik sendiri)
+- ✅ UI/UX dashboard admin dengan dropdown status berwarna
+- ✅ Workflow admin lebih efisien
+
+---
+
+**Last Updated**: December 4, 2025
+**Version**: 1.3.0
