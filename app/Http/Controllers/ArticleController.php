@@ -172,16 +172,19 @@ class ArticleController extends Controller
      * Menampilkan formulir untuk mengedit artikel
      * 
      * Method ini menampilkan halaman form edit artikel yang sudah ada.
-     * Editor hanya bisa mengedit artikel miliknya sendiri.
+     * - Editor hanya bisa mengedit artikel miliknya sendiri
+     * - Admin bisa mengedit semua artikel (termasuk yang sudah published)
      * 
      * @param Article $article Model artikel yang akan diedit (Route Model Binding)
      * @return View Halaman form edit artikel
      */
     public function edit(Article $article): View
     {
-        // Otorisasi: Pastikan editor hanya bisa mengedit artikelnya sendiri
-        // Jika bukan pemilik, tampilkan error 403 Forbidden
-        abort_if($article->user_id !== Auth::id(), 403, 'Anda tidak diizinkan mengedit artikel ini.');
+        // Otorisasi: Editor hanya bisa edit artikel sendiri, Admin bisa edit semua
+        // Jika bukan pemilik dan bukan admin, tampilkan error 403 Forbidden
+        if (Auth::user()->role !== 'admin') {
+            abort_if($article->user_id !== Auth::id(), 403, 'Anda tidak diizinkan mengedit artikel ini.');
+        }
         
         // Kirim data artikel ke view untuk ditampilkan di form
         return view('editor.edit', compact('article')); 
@@ -205,8 +208,10 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article): RedirectResponse
     {
-        // Otorisasi: Pastikan editor hanya bisa mengedit artikelnya sendiri
-        abort_if($article->user_id !== Auth::id(), 403, 'Anda tidak diizinkan memperbarui artikel ini.');
+        // Otorisasi: Editor hanya bisa edit artikel sendiri, Admin bisa edit semua
+        if (Auth::user()->role !== 'admin') {
+            abort_if($article->user_id !== Auth::id(), 403, 'Anda tidak diizinkan memperbarui artikel ini.');
+        }
         
         // STEP 1: Validasi Data Input
         // Slug harus unik kecuali untuk artikel ini sendiri (ignore artikel dengan id ini)
@@ -267,7 +272,13 @@ class ArticleController extends Controller
         // STEP 4: Update data artikel di database
         $article->update($validated);
 
-        // Redirect ke dashboard dengan pesan sukses
+        // STEP 5: Redirect berdasarkan role
+        // Admin kembali ke dashboard admin, Editor ke dashboard editor
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.dashboard')
+                              ->with('success', 'Artikel berhasil diperbarui.');
+        }
+        
         return redirect()->route('editor.dashboard')
                           ->with('success', 'Artikel berhasil diperbarui.');
     }

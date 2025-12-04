@@ -175,12 +175,21 @@
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ Str::limit($article->title, 50) }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $article->user->name }}</td>
                                     <td class="px-6 py-4">
-                                        <span class="px-3 py-1 text-xs font-bold rounded-full
-                                            {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
-                                               ($article->status == 'draft' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' : 
-                                               'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400') }}">
-                                            {{ strtoupper($article->status) }}
-                                        </span>
+                                        <form action="{{ route('admin.articles.updateStatus', $article->slug) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="status" onchange="this.form.submit()" 
+                                                class="px-3 py-1.5 text-xs font-bold rounded-full border-0 cursor-pointer transition
+                                                {{ $article->status == 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 
+                                                   ($article->status == 'draft' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' : 
+                                                   ($article->status == 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                                                   'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400')) }}">
+                                                <option value="draft" {{ $article->status == 'draft' ? 'selected' : '' }}>DRAFT</option>
+                                                <option value="pending" {{ $article->status == 'pending' ? 'selected' : '' }}>PENDING</option>
+                                                <option value="published" {{ $article->status == 'published' ? 'selected' : '' }}>PUBLISHED</option>
+                                                <option value="rejected" {{ $article->status == 'rejected' ? 'selected' : '' }}>REJECTED</option>
+                                            </select>
+                                        </form>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $article->created_at->format('d M Y') }}</td>
                                     <td class="px-6 py-4">

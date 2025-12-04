@@ -99,6 +99,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Review dan moderasi artikel
         Route::get('/admin/articles/review', [ArticleController::class, 'reviewIndex'])->name('admin.review.index');
         Route::put('/admin/articles/{article}/status', [ArticleController::class, 'updateStatus'])->name('admin.articles.updateStatus');
+        
+        // Admin bisa edit semua artikel (termasuk yang sudah published)
+        // Menggunakan route yang sama dengan editor untuk konsistensi
+        Route::get('/editor/articles/{article}/edit', [ArticleController::class, 'edit'])->name('admin.articles.edit');
+        Route::put('/editor/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
     });
 
 
