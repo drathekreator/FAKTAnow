@@ -19,9 +19,10 @@
 - [x] Auto-generate slug dari title
 - [x] Manual slug input
 - [x] Rich text content
-- [x] Status artikel (Draft, Published, Pending, Rejected)
+- [x] Status artikel (Draft, Published) - **Simplified: removed Pending & Rejected**
 - [x] **BARU: Admin bisa ubah status artikel yang sudah published**
 - [x] **BARU: Admin bisa edit artikel published tanpa unpublish**
+- [x] **BARU: Draft artikel bisa diedit oleh editor dan admin**
 - [x] View counter
 - [x] Kategori artikel
 - [x] Eager loading untuk optimasi query
@@ -263,21 +264,29 @@
 
 ---
 
-## 🆕 Changelog v1.3.0 (Latest)
+## 🆕 Changelog v1.4.0 (Latest)
 
-### Added
+### Changed
+- ✅ **Simplified article status system**: Removed "Pending" and "Rejected" status
+- ✅ **Only 2 status options now**: Draft and Published
+- ✅ Draft articles can be edited by both editor (owner) and admin
+- ✅ Published articles can be edited by admin
+- ✅ Status dropdown updated in both admin dashboard and review page
+- ✅ Validation updated to only accept 'draft' and 'published'
+
+### Fixed
+- ✅ Draft articles can now be saved after editing (previously blocked)
+- ✅ Consistent route model binding for updateStatus (using $article instead of $article->slug)
+- ✅ Simplified CSS classes for status badges (only draft/published states)
+
+### Previous (v1.3.0)
 - ✅ Admin dapat mengubah status artikel langsung dari dashboard
 - ✅ Admin dapat mengedit semua artikel (termasuk yang sudah published)
 - ✅ Dropdown status artikel dengan auto-submit di dashboard admin
 - ✅ Redirect otomatis berdasarkan role setelah edit artikel
 - ✅ Dokumentasi lengkap di ADMIN_ARTICLE_MANAGEMENT.md
 
-### Improved
-- ✅ Otorisasi edit artikel (admin bisa edit semua, editor hanya milik sendiri)
-- ✅ UI/UX dashboard admin dengan dropdown status berwarna
-- ✅ Workflow admin lebih efisien
-
 ---
 
 **Last Updated**: December 4, 2025
-**Version**: 1.3.0
+**Version**: 1.4.0
