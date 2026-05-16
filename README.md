@@ -181,11 +181,11 @@ Project ini menggunakan lisensi MIT.
 ## Tim Pengembang
 
 Kelompok 5 - Pemrograman Web
-- [Nama Anggota 1]
-- [Nama Anggota 2]
-- [Nama Anggota 3]
-- [Nama Anggota 4]
-- [Nama Anggota 5]
+- Indra Fata Azzaky
+- Bagas Putra Rinaldi
+- Satria Febrian
+- Azzaria Nur Febbyasari
+- Maulana Krishna Wahyu Agung
 
 ---
 
